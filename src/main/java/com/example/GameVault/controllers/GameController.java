@@ -78,4 +78,56 @@ public class GameController {
 
         return "redirect:/juegos";
     }
+
+    @GetMapping("/juegos/editar/{id}")
+    public String editarJuego(@PathVariable Long id, Model model) {
+        Juego juego = juegoService.obtenerJuegoPorId(id);
+        Usuario logueado = usuarioService.obtenerUsuarioLogeado();
+
+        // Si el juego existe y el dueño coincide, mostramos el formulario
+        if(juego != null && juego.getUsuario().getId().equals(logueado.getId())) {
+            model.addAttribute("juego", juego);
+            return "formulario"; // Reutilizamos nuestra vista de formulario
+        }
+
+        // Si intenta editar un juego ajeno, lo devolvemos a su panel
+        return "redirect:/mis-juegos";
+    }
+
+    @PostMapping("/juegos/editar/{id}")
+    public String actualizarJuego(@PathVariable Long id,
+                                  @RequestParam("titulo") String titulo,
+                                  @RequestParam("descripcion") String descripcion,
+                                  @RequestParam("precio")Double precio,
+                                  @RequestParam("categoria") String categoria,
+                                  @RequestParam(value = "portada", required = false) MultipartFile portada){
+        Juego juegoExistente = juegoService.obtenerJuegoPorId(id);
+        Usuario logueado = usuarioService.obtenerUsuarioLogeado();
+
+        // Verificamos propiedad nuevamente antes de modificar
+        if(juegoExistente != null && juegoExistente.getUsuario().getId().equals(logueado.getId())){
+            juegoExistente.setTitulo(titulo);
+            juegoExistente.setDescripcion(descripcion);
+            juegoExistente.setPrecio(precio);
+            juegoExistente.setCategoria(categoria);
+
+            juegoService.guardarJuego(juegoExistente, portada);
+        }
+        return "redirect:/mis-juegos";
+
+    }
+
+    @PostMapping("/juegos/eliminar/{id}")
+    public String eliminarJuego(@PathVariable Long id){
+        Juego juego = juegoService.obtenerJuegoPorId(id);
+        Usuario logueado = usuarioService.obtenerUsuarioLogeado();
+
+        // Solo procedemos a borrar si el usuario logueado es el dueño
+        if(juego != null && juego.getUsuario().getId().equals(logueado.getId())){
+            juegoService.eliminarJuego(id);
+        }
+        return "redirect:/mis-juegos";
+    }
+
+
 }
