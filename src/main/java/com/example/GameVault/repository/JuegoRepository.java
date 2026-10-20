@@ -13,9 +13,9 @@ public interface JuegoRepository extends JpaRepository<Juego, Long> {
     List<Juego> findByUsuarioId(Long usuarioId);
 
     // SELECT * FROM
-    @Query("SELECT j FROM Juegos j ORDER BY j.id DESC")
+    @Query("SELECT j FROM Juego j ORDER BY j.id DESC")
     List<Juego> obtenerJuegosRecientes();
 
-    @Query("SELECT j FROM Juegos j WHERE LOWER(j.descripcion) LIKE LOWER(CONCAT('%', :palabra, '%')) ")
+    @Query("SELECT j FROM Juego j WHERE LOWER(j.descripcion) LIKE LOWER(CONCAT('%', :palabra, '%')) ")
     List<Juego> buscarPorDescripcion(String palabra);
 }

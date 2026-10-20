@@ -1,7 +1,6 @@
 <th:block th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
     <title>Mis Juegos - GameVault</title>
     <main class="container">
-        <!-- ENCABEZADO -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
             <div>
                 <h2 class="text-gradient" style="margin-bottom: 5px;">Mi Bóveda</h2>
@@ -9,19 +8,19 @@
             </div>
             <a href="/juegos/nuevo" class="btn btn-primary">+ Nuevo Juego</a>
         </div>
-        <!-- MENSAJE SI LA BÓVEDA ESTÁ VACÍA -->
-        <div th:if="${#lists.isEmpty(juegos)}" style="text-align: center; padding: 50px; background: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color);">
+
+        <div th:if="${#lists.isEmpty(juegos)}" style="text-align: center; padding: 50px; background: var(--bg-panel); border-radius: 12px; border: 1px solid var(--border-color);">
             <h3 style="margin-top: 0;">Aún no tienes juegos</h3>
             <p style="color: var(--text-muted);">Sube tu primer juego para empezar a construir tu bóveda.</p>
             <a href="/juegos/nuevo" class="btn btn-primary" style="margin-top: 10px;">Subir Juego</a>
         </div>
-        <!-- LISTA DE JUEGOS DEL USUARIO -->
+
         <div class="grid" th:unless="${#lists.isEmpty(juegos)}">
             <div th:each="juego : ${juegos}" class="panel" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
-
                 <img th:src="${#strings.startsWith(juego.portadaUrl, 'http')} ? ${juego.portadaUrl} : @{/uploads/{img}(img=${juego.portadaUrl})}"
                      alt="Portada"
                      style="width: 100%; height: 250px; object-fit: cover; display: block;" />
+
                 <div style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;">
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
                         <h3 th:text="${juego.titulo}" style="margin: 0;">Título del Juego</h3>
@@ -32,7 +31,6 @@
 
                     <p th:text="${juego.descripcion}" style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin: 0; margin-bottom: 20px; flex-grow: 1;">Descripción breve.</p>
 
-                    <!-- BOTONES DEL CRUD (EDITAR Y ELIMINAR) -->
                     <div style="display: flex; gap: 10px; margin-top: auto;">
                         <a th:href="@{/juegos/editar/{id}(id=${juego.id})}" class="btn btn-secondary" style="flex: 1; text-align: center; background: rgba(50, 150, 255, 0.1); color: #6bb5ff; border-color: rgba(50, 150, 255, 0.2);">Editar</a>
 
