@@ -18,7 +18,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String mostrarLogin(){
-        return "Login";
+        return "login";
     }
 
     @PostMapping("/login")
